@@ -1,0 +1,17 @@
+import:
+- package: github.com/Microsoft/go-winio
+  version: 78439966b38d69bf38227fbf57ac8a6fee70f69a
+- package: github.com/Sirupsen/logrus
+  version: 181d419aa9e2223811b824e8f0b4af96f9ba9302
+- package: github.com/coreos/go-systemd
+  version: d2196463941895ee908e13531a23a39feb9e1243
+- package: github.com/docker/go-connections
+  version: 3ede32e2033de7505e6500d6c868c2b9ed9f169d
+- package: github.com/docker/go-plugins-helpers
+  version: a9ef19c479cb60e751efa55f7f2b265776af1abf
+- package: golang.org/x/crypto
+  version: b176d7def5d71bdd214203491f89843ed217f420
+- package: golang.org/x/net
+  version: 1c05540f6879653db88113bc4a2b70aec4bd491f
+- package: golang.org/x/sys
+  version: 9f7170bcd8e9f4d3691c06401119c46a769a1e03

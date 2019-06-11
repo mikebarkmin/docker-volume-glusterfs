@@ -1,21 +1,25 @@
 {
   "description": "GlusterFS plugin for Docker",
-  "documentation": "https://github.com/trajano/docker-volume-plugins/",
+  "documentation": "https://github.com/mikebarkmin/docker-volume-glusterfs",
   "entrypoint": ["/docker-volume-glusterfs"],
   "env": [
     {
-      "name": "SERVERS",
+      "name": "DEBUG",
       "settable": ["value"],
-      "value": ""
+      "value": "1"
     }
   ],
-  "network": {
-    "type": "host"
-  },
-  "propagatedMount": "/mnt/volumes",
   "interface": {
-    "types": ["docker.volumedriver/1.0"],
-    "socket": "gfs.sock"
+    "socket": "gfs.sock",
+    "types": ["docker.volumedriver/1.0"]
+  },
+  "linux": {
+    "capabilities": ["CAP_SYS_ADMIN"],
+    "devices": [
+      {
+        "path": "/dev/fuse"
+      }
+    ]
   },
   "mounts": [
     {
@@ -27,12 +31,8 @@
       "type": "bind"
     }
   ],
-  "linux": {
-    "capabilities": ["CAP_SYS_ADMIN"],
-    "devices": [
-      {
-        "path": "/dev/fuse"
-      }
-    ]
-  }
+  "network": {
+    "type": "host"
+  },
+  "propagatedMount": "/mnt/volumes"
 }

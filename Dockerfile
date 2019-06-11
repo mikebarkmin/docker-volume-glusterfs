@@ -1,11 +1,10 @@
-FROM golang:1.10-alpine as builder
+FROM ubuntu:18.04 as builder
 COPY . /go/src/github.com/mikebarkmin/docker-volume-glusterfs
 WORKDIR /go/src/github.com/mikebarkmin/docker-volume-glusterfs
+ENV GOPATH=/go
 RUN set -ex \
-    && apk add --no-cache --virtual .build-deps \
-    gcc libc-dev \
-    && go install --ldflags '-extldflags "-static"' \
-    && apk del .build-deps
+    && apt update && apt install -y gcc libc-dev golang-go \
+    && go install --ldflags '-extldflags "-static"'
 CMD ["/go/bin/docker-volume-glusterfs"]
 
 FROM ubuntu:18.04

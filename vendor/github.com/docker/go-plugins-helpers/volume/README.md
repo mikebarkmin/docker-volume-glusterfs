@@ -33,4 +33,3 @@ This library is designed to be integrated in your program.
 - https://github.com/calavera/docker-volume-glusterfs
 - https://github.com/calavera/docker-volume-keywhiz
 - https://github.com/quobyte/docker-volume
-- https://github.com/NimbleStorage/Nemo
