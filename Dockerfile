@@ -8,8 +8,12 @@ RUN set -ex \
 CMD ["/go/bin/docker-volume-glusterfs"]
 
 FROM ubuntu:18.04
-RUN apt update && apt install software-properties-common -y
-RUN add-apt-repository ppa:gluster/glusterfs-6 && apt update && apt install glusterfs-client -y
+RUN apt update \
+  && apt install software-properties-common -y
+RUN add-apt-repository ppa:gluster/glusterfs-6 \ 
+  && apt update \
+  && apt install glusterfs-client -y \
+  && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /go/bin/docker-volume-glusterfs .
 CMD ["docker-volume-glusterfs"]
 

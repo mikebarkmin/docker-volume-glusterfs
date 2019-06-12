@@ -1,4 +1,4 @@
-PLUGIN_NAME = mikebarkmin/docker-volume-glusterfs
+PLUGIN_NAME = mikebarkmin/glusterfs
 PLUGIN_TAG ?= next
 
 all: clean rootfs create

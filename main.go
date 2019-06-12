@@ -18,15 +18,16 @@ import (
 	"github.com/docker/go-plugins-helpers/volume"
 )
 
-const socketAddress = "/run/docker/plugins/gfs.sock"
+const socketAddress = "/run/docker/plugins/glusterfs.sock"
 
 type glusterfsVolume struct {
-	connections int
-	Subdir      string
-	Servers     []string
-	Volname     string
-	Options     []string
-	Mountpoint  string
+	connections      int
+	Subdir           string
+	SubdirMountpoint string
+	Servers          []string
+	Volname          string
+	Options          []string
+	Mountpoint       string
 }
 
 type glusterfsDriver struct {
@@ -112,7 +113,7 @@ func (d *glusterfsDriver) Create(r *volume.CreateRequest) error {
 		return logError("'servers' option required")
 	}
 
-	v.Mountpoint = filepath.Join(d.root, fmt.Sprintf("%x", md5.Sum([]byte(v.Subdir))))
+	v.Mountpoint = filepath.Join(d.root, fmt.Sprintf("%x/%x", md5.Sum([]byte(v.Volname)), md5.Sum([]byte(v.Subdir))))
 
 	d.volumes[r.Name] = v
 
@@ -190,7 +191,7 @@ func (d *glusterfsDriver) Mount(r *volume.MountRequest) (*volume.MountResponse, 
 
 	v.connections++
 
-	return &volume.MountResponse{Mountpoint: v.Mountpoint}, nil
+	return &volume.MountResponse{Mountpoint: v.SubdirMountpoint}, nil
 }
 
 func (d *glusterfsDriver) Unmount(r *volume.UnmountRequest) error {
@@ -226,7 +227,7 @@ func (d *glusterfsDriver) Get(r *volume.GetRequest) (*volume.GetResponse, error)
 		return &volume.GetResponse{}, logError("volume %s not found", r.Name)
 	}
 
-	return &volume.GetResponse{Volume: &volume.Volume{Name: r.Name, Mountpoint: v.Mountpoint}}, nil
+	return &volume.GetResponse{Volume: &volume.Volume{Name: r.Name, Mountpoint: v.SubdirMountpoint}}, nil
 }
 
 func (d *glusterfsDriver) List() (*volume.ListResponse, error) {
@@ -256,7 +257,7 @@ func (d *glusterfsDriver) mountVolume(v *glusterfsVolume) error {
 	}
 
 	var servers = strings.Join(v.Servers, ",")
-	var path = fmt.Sprintf("/%s", v.Volname, v.Subdir)
+	var path = fmt.Sprintf("/%s", v.Volname)
 	cmd.Args = append(cmd.Args, fmt.Sprintf("%s:%s", servers, path), v.Mountpoint)
 
 	logrus.Debug(cmd.Args)
@@ -264,6 +265,23 @@ func (d *glusterfsDriver) mountVolume(v *glusterfsVolume) error {
 	if err != nil {
 		return logError("glusterfs command execute failed: %v (%s)", err, output)
 	}
+
+	var subdir = filepath.Join(v.Mountpoint, v.Subdir)
+	fi, err := os.Lstat(subdir)
+	if os.IsNotExist(err) {
+		if err := os.MkdirAll(subdir, 0755); err != nil {
+			return logError(err.Error())
+		}
+	} else if err != nil {
+		return logError(err.Error())
+	}
+
+	if fi != nil && !fi.IsDir() {
+		return logError("subdir %v already exist and it's not a directory", subdir)
+	}
+
+	v.SubdirMountpoint = subdir
+
 	return nil
 }
 

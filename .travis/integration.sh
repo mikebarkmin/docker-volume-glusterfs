@@ -21,7 +21,7 @@ docker build -t sshd .travis/ssh
 # make the plugin
 sudo PLUGIN_TAG=$TAG make
 # enable the plugin
-sudo docker plugin enable vieux/sshfs:$TAG
+sudo docker plugin enable mikebarkmin/glusterfs:$TAG
 # list plugins
 sudo docker plugin ls
 # start sshd

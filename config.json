@@ -1,16 +1,16 @@
 {
-  "description": "GlusterFS plugin for Docker",
+  "description": "glusterFS plugin for Docker",
   "documentation": "https://github.com/mikebarkmin/docker-volume-glusterfs",
   "entrypoint": ["/docker-volume-glusterfs"],
   "env": [
     {
       "name": "DEBUG",
       "settable": ["value"],
-      "value": "1"
+      "value": "0"
     }
   ],
   "interface": {
-    "socket": "gfs.sock",
+    "socket": "glusterfs.sock",
     "types": ["docker.volumedriver/1.0"]
   },
   "linux": {
