@@ -11,7 +11,7 @@
         go: 1.10.x
         env: TESTFILE=unit.sh
       - language: go
-        go: master
+        go: 1.12.x
         env: TESTFILE=unit.sh
         #- language: generic
         #  sudo: required
