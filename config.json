@@ -7,6 +7,16 @@
       "name": "DEBUG",
       "settable": ["value"],
       "value": "0"
+    },
+    {
+      "name": "SERVERS",
+      "settable": ["value"],
+      "value": ""
+    },
+    {
+      "name": "VOLNAME",
+      "settable": ["value"],
+      "value": ""
     }
   ],
   "interface": {

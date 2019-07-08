@@ -36,15 +36,19 @@ type glusterfsDriver struct {
 	root      string
 	statePath string
 	volumes   map[string]*glusterfsVolume
+	defaultVolname string
+	defaultServers string
 }
 
-func newGlusterfsDriver(root string) (*glusterfsDriver, error) {
+func newGlusterfsDriver(root string, defaultServers string, defaultVolname string) (*glusterfsDriver, error) {
 	logrus.WithField("method", "new driver").Debug(root)
 
 	d := &glusterfsDriver{
 		root:      filepath.Join(root, "volumes"),
 		statePath: filepath.Join(root, "state", "gfs-state.json"),
 		volumes:   map[string]*glusterfsVolume{},
+		defaultVolname: defaultVolname,
+		defaultServers: defaultServers,
 	}
 
 	data, err := ioutil.ReadFile(d.statePath)
@@ -80,7 +84,11 @@ func (d *glusterfsDriver) Create(r *volume.CreateRequest) error {
 
 	d.Lock()
 	defer d.Unlock()
-	v := &glusterfsVolume{}
+	v := &glusterfsVolume{
+		Subdir: r.Name,
+		Volname: d.defaultVolname,
+		Servers: strings.Split(d.defaultServers, ","),
+	}
 
 	for key, val := range r.Options {
 		switch key {
@@ -302,7 +310,7 @@ func main() {
 		logrus.SetLevel(logrus.DebugLevel)
 	}
 
-	d, err := newGlusterfsDriver("/mnt")
+	d, err := newGlusterfsDriver("/mnt", os.Getenv("SERVERS"), os.Getenv("VOLNAME"))
 	if err != nil {
 		log.Fatal(err)
 	}
