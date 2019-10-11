@@ -33,9 +33,9 @@ type glusterfsVolume struct {
 type glusterfsDriver struct {
 	sync.RWMutex
 
-	root      string
-	statePath string
-	volumes   map[string]*glusterfsVolume
+	root           string
+	statePath      string
+	volumes        map[string]*glusterfsVolume
 	defaultVolname string
 	defaultServers string
 }
@@ -44,9 +44,9 @@ func newGlusterfsDriver(root string, defaultServers string, defaultVolname strin
 	logrus.WithField("method", "new driver").Debug(root)
 
 	d := &glusterfsDriver{
-		root:      filepath.Join(root, "volumes"),
-		statePath: filepath.Join(root, "state", "gfs-state.json"),
-		volumes:   map[string]*glusterfsVolume{},
+		root:           filepath.Join(root, "volumes"),
+		statePath:      filepath.Join(root, "state", "gfs-state.json"),
+		volumes:        map[string]*glusterfsVolume{},
 		defaultVolname: defaultVolname,
 		defaultServers: defaultServers,
 	}
@@ -85,7 +85,7 @@ func (d *glusterfsDriver) Create(r *volume.CreateRequest) error {
 	d.Lock()
 	defer d.Unlock()
 	v := &glusterfsVolume{
-		Subdir: r.Name,
+		Subdir:  r.Name,
 		Volname: d.defaultVolname,
 		Servers: strings.Split(d.defaultServers, ","),
 	}
