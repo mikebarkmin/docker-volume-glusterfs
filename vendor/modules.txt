@@ -1,0 +1,28 @@
+# github.com/Microsoft/go-winio v0.4.16
+## explicit
+github.com/Microsoft/go-winio
+github.com/Microsoft/go-winio/pkg/guid
+# github.com/Sirupsen/logrus v1.0.2-0.20170728074214-181d419aa9e2
+## explicit
+github.com/Sirupsen/logrus
+# github.com/coreos/go-systemd v0.0.0-20170731111925-d21964639418
+## explicit
+github.com/coreos/go-systemd/activation
+# github.com/docker/go-connections v0.3.0
+## explicit
+github.com/docker/go-connections/sockets
+# github.com/docker/go-plugins-helpers v0.0.0-20170817192157-a9ef19c479cb
+## explicit
+github.com/docker/go-plugins-helpers/sdk
+github.com/docker/go-plugins-helpers/volume
+# golang.org/x/crypto v0.0.0-20170808112155-b176d7def5d7
+## explicit
+golang.org/x/crypto/ssh/terminal
+# golang.org/x/net v0.0.0-20170809000501-1c05540f6879
+## explicit
+golang.org/x/net/proxy
+# golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c
+## explicit
+golang.org/x/sys/internal/unsafeheader
+golang.org/x/sys/unix
+golang.org/x/sys/windows
