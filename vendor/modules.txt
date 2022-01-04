@@ -2,9 +2,9 @@
 ## explicit
 github.com/Microsoft/go-winio
 github.com/Microsoft/go-winio/pkg/guid
-# github.com/Sirupsen/logrus v1.0.2-0.20170728074214-181d419aa9e2
+# github.com/sirupsen/logrus v1.0.2-0.20170728074214-181d419aa9e2
 ## explicit
-github.com/Sirupsen/logrus
+github.com/sirupsen/logrus
 # github.com/coreos/go-systemd v0.0.0-20170731111925-d21964639418
 ## explicit
 github.com/coreos/go-systemd/activation

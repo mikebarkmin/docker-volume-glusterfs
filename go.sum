@@ -1,7 +1,7 @@
 github.com/Microsoft/go-winio v0.4.16 h1:FtSW/jqD+l4ba5iPBj9CODVtgfYAD8w2wS923g/cFDk=
 github.com/Microsoft/go-winio v0.4.16/go.mod h1:XB6nPKklQyQ7GC9LdcBEcBl8PF76WugXOPRXwdLnMv0=
-github.com/Sirupsen/logrus v1.0.2-0.20170728074214-181d419aa9e2 h1:jl8hEwPZE69erxyeZ4khL3Ytc9gnFArwUMUBG02N0js=
-github.com/Sirupsen/logrus v1.0.2-0.20170728074214-181d419aa9e2/go.mod h1:rmk17hk6i8ZSAJkSDa7nOxamrG+SP4P0mm+DAvExv4U=
+github.com/sirupsen/logrus v1.0.2-0.20170728074214-181d419aa9e2 h1:jl8hEwPZE69erxyeZ4khL3Ytc9gnFArwUMUBG02N0js=
+github.com/sirupsen/logrus v1.0.2-0.20170728074214-181d419aa9e2/go.mod h1:rmk17hk6i8ZSAJkSDa7nOxamrG+SP4P0mm+DAvExv4U=
 github.com/coreos/go-systemd v0.0.0-20170731111925-d21964639418 h1:0QH6fTJVDpblGjjozilaO++YRbnQNnTYh3yuFJHH0o8=
 github.com/coreos/go-systemd v0.0.0-20170731111925-d21964639418/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
