@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  alpine2:
+    image: nginx:latest
+    working_dir: /data
+    volumes:
+      - test-volume:/data
+
+volumes:
+  test-volume:
+    driver: mikebarkmin/glusterfs:next
+    driver_opts:
+      volname: gv0
+      subdir: foo

@@ -1,9 +1,10 @@
 package main
 
 import (
-	"crypto/md5"
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -14,14 +15,15 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/sirupsen/logrus"
 	"github.com/docker/go-plugins-helpers/volume"
+	"github.com/sirupsen/logrus"
 )
 
 const socketAddress = "/run/docker/plugins/glusterfs.sock"
 
 type glusterfsVolume struct {
 	connections      int
+	Name             string
 	Subdir           string
 	SubdirMountpoint string
 	Servers          []string
@@ -86,6 +88,7 @@ func (d *glusterfsDriver) Create(r *volume.CreateRequest) error {
 	defer d.Unlock()
 	v := &glusterfsVolume{
 		Subdir:  r.Name,
+		Name:    r.Name,
 		Volname: d.defaultVolname,
 		Servers: strings.Split(d.defaultServers, ","),
 	}
@@ -121,13 +124,31 @@ func (d *glusterfsDriver) Create(r *volume.CreateRequest) error {
 		return logError("'servers' option required")
 	}
 
-	v.Mountpoint = filepath.Join(d.root, fmt.Sprintf("%x/%x", md5.Sum([]byte(v.Volname)), md5.Sum([]byte(v.Subdir))))
+	v.Mountpoint = filepath.Join(d.root, fmt.Sprintf("%x/%x/%x", sha256.Sum256([]byte(v.Name)), sha256.Sum256([]byte(v.Volname)), sha256.Sum256([]byte(v.Subdir))))
 
 	d.volumes[r.Name] = v
 
 	d.saveState()
 
 	return nil
+}
+
+// https://socketloop.com/tutorials/golang-determine-if-directory-is-empty-with-os-file-readdir-function
+func IsDirEmpty(name string) (bool, error) {
+	f, err := os.Open(name)
+	if err != nil {
+		return false, err
+	}
+	defer f.Close()
+
+	// read in ONLY one file
+	_, err = f.Readdir(1)
+
+	// and if the file is EOF... well, the dir is empty.
+	if err == io.EOF {
+		return true, nil
+	}
+	return false, err
 }
 
 func (d *glusterfsDriver) Remove(r *volume.RemoveRequest) error {
@@ -143,6 +164,16 @@ func (d *glusterfsDriver) Remove(r *volume.RemoveRequest) error {
 
 	if v.connections != 0 {
 		return logError("volume %s is currently used by a container", r.Name)
+	}
+
+	empty, err := IsDirEmpty(v.Mountpoint)
+
+	if !empty || err != nil {
+		return logError(
+			"Directory for volume %s where the volume is mounted is not empty. "+
+				"This would result in complete removal of all data. Please stop all "+
+				"containers that mount the same volume and subdirectory and try again.",
+			r.Name)
 	}
 
 	if err := os.RemoveAll(v.Mountpoint); err != nil {
