@@ -9,5 +9,5 @@ require (
 	github.com/docker/go-plugins-helpers v0.0.0-20170817192157-a9ef19c479cb
 	github.com/sirupsen/logrus v1.4.1
 	golang.org/x/net v0.0.0-20170809000501-1c05540f6879 // indirect
-	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
+	golang.org/x/sys v0.1.0 // indirect
 )
